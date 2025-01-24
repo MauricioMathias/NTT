@@ -60,6 +60,27 @@ describe('Cenário dos usuários', () => {
     })
   })
 
+  it('Caminho feliz - Editar usuário', () => {
+    //Realiza a chamada do serviço de criação dos usuários
+    cy.request({
+      method: 'PUT',
+      url: backUrl+'/usuarios/'+idUsuario,
+      body: {
+        user: {
+          nome: nomeAlterado,
+          email: emailAlterado,
+          password: passwordAlterado,
+          administrador: `${admin}`
+        }
+      }
+    }).then((excluiUsuariosResponse) => {
+      
+      //Verifica o retorno do serviço
+      expect(excluiUsuariosResponse.status).to.equal(200)
+      expect(excluiUsuariosResponse.body.message).to.have.string('Registro alterado com sucesso')
+    })
+  })
+
   it('Caminho feliz - Excluir usuário', () => {
     //Realiza a chamada do serviço de criação dos usuários
     cy.request({
