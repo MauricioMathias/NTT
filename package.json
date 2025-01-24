@@ -18,6 +18,7 @@
     "test": "npx cypress open"
   },
   "dependencies": {
-    "cypress": "^14.0.0"
+    "cypress": "^14.0.0",
+    "leite": "^0.2.0"
   }
 }
