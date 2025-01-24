@@ -44,7 +44,7 @@ describe('Cenário dos usuários', () => {
   })
 
   it('Caminho feliz - Busca de usuário por ID', () => {
-    //Realiza a chamada do serviço de criação dos usuários
+    //Realiza a chamada do serviço de busca dos usuários
     cy.request({
       method: 'GET',
       url: backUrl+'/usuarios/'+idUsuario
@@ -61,28 +61,26 @@ describe('Cenário dos usuários', () => {
   })
 
   it('Caminho feliz - Editar usuário', () => {
-    //Realiza a chamada do serviço de criação dos usuários
+    //Realiza a chamada do serviço de edição dos usuários
     cy.request({
       method: 'PUT',
       url: backUrl+'/usuarios/'+idUsuario,
       body: {
-        user: {
-          nome: nomeAlterado,
-          email: emailAlterado,
-          password: passwordAlterado,
-          administrador: `${admin}`
-        }
+        nome: nomeAlterado,
+        email: emailAlterado,
+        password: passwordAlterado,
+        administrador: `${admin}`
       }
-    }).then((excluiUsuariosResponse) => {
+    }).then((editaUsuariosResponse) => {
       
       //Verifica o retorno do serviço
-      expect(excluiUsuariosResponse.status).to.equal(200)
-      expect(excluiUsuariosResponse.body.message).to.have.string('Registro alterado com sucesso')
+      expect(editaUsuariosResponse.status).to.equal(200)
+      expect(editaUsuariosResponse.body.message).to.have.string('Registro alterado com sucesso')
     })
   })
 
   it('Caminho feliz - Excluir usuário', () => {
-    //Realiza a chamada do serviço de criação dos usuários
+    //Realiza a chamada do serviço de exclusão dos usuários
     cy.request({
       method: 'DELETE',
       url: backUrl+'/usuarios/'+idUsuario
