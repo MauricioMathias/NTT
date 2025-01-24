@@ -1,0 +1,23 @@
+{
+  "name": "ntt",
+  "version": "1.0.0",
+  "description": "Projeto de automaçao nttdata",
+  "homepage": "https://github.com/MauricioMathias/NTT#readme",
+  "bugs": {
+    "url": "https://github.com/MauricioMathias/NTT/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MauricioMathias/NTT.git"
+  },
+  "license": "ISC",
+  "author": "Mauricio Mathias",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress open"
+  },
+  "dependencies": {
+    "cypress": "^14.0.0"
+  }
+}
