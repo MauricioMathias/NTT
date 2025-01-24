@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "cypress": "^14.0.0",
-    "leite": "^0.2.0"
+    "leite": "^0.2.0",
+    "random-password": "^0.1.2"
   }
 }

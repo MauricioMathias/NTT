@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 const Leite = require('leite') //Esse pacote é um gerador de dados aleatórios brasileiros
+const generator = require('random-password'); //Esse pacote é um gerador de senha aleatório
 
 describe('Cenário dos usuários', () => {
 
@@ -8,12 +9,18 @@ describe('Cenário dos usuários', () => {
   const leite = new Leite()
 
   const backUrl = Cypress.env('backUrl')
+
+  //Variaveis de criação do usuário
   var nome = leite.pessoa.nome() //Nome do usuário
   var email = leite.pessoa.email() //Email do usuário
   var admin = Math.random() < 0.5 //Gera um booleano aleatório entre verdadeiro ou falso (0 ou 1)
-  var password = 'teste' //Senha do usuário
+  var password = generator(10) //Senha do usuário
   var idUsuario
 
+  //Variáveis de edição do usuário
+  var nomeAlterado = leite.pessoa.nome() //Nome do usuário
+  var emailAlterado = leite.pessoa.email() //Email do usuário
+  var passwordAlterado = generator(10) //Senha do usuário
 
   it('Caminho feliz - Cadastro de usuário', () => {
     //Realiza a chamada do serviço de criação dos usuários
@@ -50,6 +57,19 @@ describe('Cenário dos usuários', () => {
       expect(buscaUsuariosResponse.body.password).to.have.string(password)
       expect(buscaUsuariosResponse.body.administrador).to.have.string(admin)
       expect(buscaUsuariosResponse.body._id).to.exist
+    })
+  })
+
+  it('Caminho feliz - Excluir usuário', () => {
+    //Realiza a chamada do serviço de criação dos usuários
+    cy.request({
+      method: 'DELETE',
+      url: backUrl+'/usuarios/'+idUsuario
+    }).then((excluiUsuariosResponse) => {
+      
+      //Verifica o retorno do serviço
+      expect(excluiUsuariosResponse.status).to.equal(200)
+      expect(excluiUsuariosResponse.body.message).to.have.string('Registro excluído com sucesso')
     })
   })
 })
