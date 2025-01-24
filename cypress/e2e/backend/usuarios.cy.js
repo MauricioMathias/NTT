@@ -18,9 +18,9 @@ describe('Cenário dos usuários', () => {
   var idUsuario
 
   //Variáveis de edição do usuário
-  var nomeAlterado = leite.pessoa.nome() //Nome do usuário
-  var emailAlterado = leite.pessoa.email() //Email do usuário
-  var passwordAlterado = generator(10) //Senha do usuário
+  var nomeAlterado = leite.pessoa.nome() //Nome do usuário alterado
+  var emailAlterado = leite.pessoa.email() //Email do usuário alterado
+  var passwordAlterado = generator(10) //Senha do usuário alterado
 
   it('Caminho feliz - Cadastro de usuário', () => {
     //Realiza a chamada do serviço de criação dos usuários
