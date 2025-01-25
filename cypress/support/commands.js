@@ -24,6 +24,24 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('buscaUsuario', () => { 
+    const backUrl = Cypress.env('backUrl')
+
+    //Busca usuários
+    cy.request({
+        method: 'GET',
+        url: backUrl+'/usuarios'
+      }).then((getUsuariosResponse) => {
+
+        var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
+
+        var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
+
+        return usuarioAleatorio
+    })
+})
+
+//Função para realizar login
 Cypress.Commands.add('login', () => { 
     const backUrl = Cypress.env('backUrl')
 
