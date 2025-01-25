@@ -42,4 +42,18 @@ describe('Cenário de Login', () => {
     cy.contains('Login') //E verifica se foi pra página inicial do login
 
   })
+
+  it('Fluxo de exceção - Login incorreto', () => {
+    //Vai para a página inicial da aplicação
+    cy.visit(frontUrl)
+
+    cy.get('[data-testid="email"]').type('teste@gmail.com') //Escreve o email
+    cy.get('[data-testid="senha"]').type('senhaTeste') //Escreve a senha
+
+    cy.get('[data-testid="entrar"]').click() //Clica no enter para entrar na aplicação
+
+    cy.get('.alert > :nth-child(2)').contains('Email e/ou senha inválidos')
+
+
+  })
 })
