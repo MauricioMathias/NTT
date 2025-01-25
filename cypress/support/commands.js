@@ -24,6 +24,30 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('numeroAleatorio', (min, max) => { 
-    return Math.floor((Math.random())*(max-min+1))+min;
+Cypress.Commands.add('login', () => { 
+    const backUrl = Cypress.env('backUrl')
+
+    //Busca usuários
+    cy.request({
+        method: 'GET',
+        url: backUrl+'/usuarios'
+      }).then((getUsuariosResponse) => {
+
+        var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
+
+        var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
+
+        //Realiza o login
+        cy.request({
+            method: 'POST',
+            url: backUrl+'/login',
+            body:{
+                email: usuarioAleatorio.email,
+                password: usuarioAleatorio.password
+            }
+        }).then((loginResponse) => {
+
+            return (loginResponse.body.authorization).replace("Bearer", "");
+        })
+    })
 })
