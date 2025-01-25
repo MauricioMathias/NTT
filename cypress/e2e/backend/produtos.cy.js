@@ -19,11 +19,6 @@ describe('Cenários dos produtos', () => {
   var quantidade = 500
   var produto
   var produtosArray
-  var idProduto
-
-  //Variáveis de edição do produto
-  var nomeAlterado = generator(10) //Nome do produto alterado
-  var descricaolterado = generator(10) //Senha do produto alterado
 
   it('Login para buscar o token', () => {
     //Realiza o login pra buscar o token 
@@ -60,6 +55,7 @@ describe('Cenários dos produtos', () => {
           //Verifica o retorno do serviço
           expect(cadastroProdutosResponse.status).to.equal(201)
           expect(cadastroProdutosResponse.body.message).to.have.string('Cadastro realizado com sucesso')
+          expect(cadastroProdutosResponse.body._id).to.exist
         }
         else if (cadastroProdutosResponse.status == '403') {
           //Verifica o retorno do serviço
@@ -70,7 +66,7 @@ describe('Cenários dos produtos', () => {
     })
   })
 
-  it('Fluxo de excessão - Cadastro de produto', () => {
+  it('Fluxo de exceção - Cadastro de produto', () => {
     
     //Realiza a chamada do serviço de criação dos produtos
     cy.request({
