@@ -17,7 +17,8 @@ describe('Cenários dos produtos', () => {
   var descricao = generator(10) //Descrição do produto
   var preco = 300
   var quantidade = 500
-  var idProduto
+  var produto
+  var produtosArray
 
   //Variáveis de edição do produto
   var nomeAlterado = generator(10) //Nome do produto alterado
@@ -52,6 +53,24 @@ describe('Cenários dos produtos', () => {
       //Verifica o retorno do serviço
       expect(cadastroProdutosResponse.status).to.equal(401)
       expect(cadastroProdutosResponse.body.message).to.have.string('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+    })
+  })
+
+  it('Caminho feliz - Listar produtos', () => {
+    
+    //Realiza a chamada do serviço de listagem dos produtos
+    cy.request({
+      method: 'GET',
+      url: backUrl+'/produtos'
+    }).then((listarrodutosResponse) => {
+
+      produtosArray = listarrodutosResponse.body.produtos
+      produto = produtosArray[Math.floor(Math.random()*produtosArray.length)]
+      
+      //Verifica o retorno do serviço
+      expect(listarrodutosResponse.status).to.equal(200)
+      expect(listarrodutosResponse.body.quantidade).to.exist
+      expect(produto).to.have.keys('descricao', 'nome', 'preco', 'quantidade', '_id')
     })
   })
 })
