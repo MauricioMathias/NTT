@@ -52,6 +52,7 @@ describe('Cenário dos produtos', () => {
         expect(cadastroProdutosResponse.body.message).to.have.string('Não é permitido possuir produto duplicado')
     })
   })
+
   it('Fluxo de exceção - Cadastro de carrinho, produto não encontrado', () => {
       
     //Realiza a chamada do serviço de cadastro dos carrinhos
@@ -74,6 +75,31 @@ describe('Cenário dos produtos', () => {
 
         expect(cadastroProdutosResponse.status).to.equal(400)
         expect(cadastroProdutosResponse.body.message).to.have.string('Produto não encontrado')
+    })
+  })
+
+  it('Fluxo de exceção - Cadastro de carrinho, token não encontrado', () => {
+      
+    //Realiza a chamada do serviço de cadastro dos carrinhos
+    cy.request({
+    method: 'POST',
+    url: backUrl+'/carrinhos',
+    headers: {
+        Authorization: 'token de teste',
+    },
+    body: {
+        produtos: [
+          {
+            idProduto: idProduto,
+            quantidade: 100
+          }
+        ]
+      },
+    failOnStatusCode: false
+    }).then((cadastroProdutosResponse) => {
+
+        expect(cadastroProdutosResponse.status).to.equal(401)
+        expect(cadastroProdutosResponse.body.message).to.have.string('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
     })
   })
 })
