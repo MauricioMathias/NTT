@@ -2,7 +2,7 @@
 
 const generator = require('random-password'); //Esse pacote é um gerador de senha aleatório
 
-describe('Cenários dos produtos', () => {
+describe('Cenário dos produtos', () => {
 
   //Classes e variáveis
   const backUrl = Cypress.env('backUrl')

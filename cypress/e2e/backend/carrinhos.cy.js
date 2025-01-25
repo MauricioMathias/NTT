@@ -2,7 +2,7 @@
 
 const generator = require('random-password'); //Esse pacote é um gerador de senha aleatório
 
-describe('Cenários dos produtos', () => {
+describe('Cenário dos produtos', () => {
 
   //Classes e variáveis
   const backUrl = Cypress.env('backUrl')
@@ -50,6 +50,30 @@ describe('Cenários dos produtos', () => {
 
         expect(cadastroProdutosResponse.status).to.equal(400)
         expect(cadastroProdutosResponse.body.message).to.have.string('Não é permitido possuir produto duplicado')
+    })
+  })
+  it('Fluxo de exceção - Cadastro de carrinho, produto não encontrado', () => {
+      
+    //Realiza a chamada do serviço de cadastro dos carrinhos
+    cy.request({
+    method: 'POST',
+    url: backUrl+'/carrinhos',
+    headers: {
+        Authorization: `Bearer${token}`,
+    },
+    body: {
+        produtos: [
+          {
+            idProduto: idProduto,
+            quantidade: 100
+          }
+        ]
+      },
+    failOnStatusCode: false
+    }).then((cadastroProdutosResponse) => {
+
+        expect(cadastroProdutosResponse.status).to.equal(400)
+        expect(cadastroProdutosResponse.body.message).to.have.string('Produto não encontrado')
     })
   })
 })
