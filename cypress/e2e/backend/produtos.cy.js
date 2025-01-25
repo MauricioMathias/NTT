@@ -19,6 +19,7 @@ describe('Cenários dos produtos', () => {
   var quantidade = 500
   var produto
   var produtosArray
+  var idProduto
 
   //Variáveis de edição do produto
   var nomeAlterado = generator(10) //Nome do produto alterado
@@ -29,6 +30,43 @@ describe('Cenários dos produtos', () => {
     cy.login().then((loginResponse) => {
 
       token = loginResponse
+    })
+  })
+
+  it('Caminho feliz - Cadastro de produto', () => {
+
+    //Realiza o login pra buscar o token 
+    cy.login().then((loginResponse) => {
+
+      token = loginResponse
+      
+      //Realiza a chamada do serviço de cadastro dos produtos
+      cy.request({
+        method: 'POST',
+        url: backUrl+'/produtos',
+        headers: {
+          Authorization: `Bearer${token}`,
+        },
+        body: {
+          nome: nome,
+          preco: preco,
+          descricao: descricao,
+          quantidade: quantidade
+        },
+        failOnStatusCode: false
+      }).then((cadastroProdutosResponse) => {
+
+        if (cadastroProdutosResponse.status == '201') {
+          //Verifica o retorno do serviço
+          expect(cadastroProdutosResponse.status).to.equal(201)
+          expect(cadastroProdutosResponse.body.message).to.have.string('Cadastro realizado com sucesso')
+        }
+        else if (cadastroProdutosResponse.status == '403') {
+          //Verifica o retorno do serviço
+          expect(cadastroProdutosResponse.status).to.equal(403)
+          expect(cadastroProdutosResponse.body.message).to.have.string('Rota exclusiva para administradores')
+        }
+      })
     })
   })
 
