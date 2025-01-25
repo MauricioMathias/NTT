@@ -29,40 +29,34 @@ describe('Cenários dos produtos', () => {
   })
 
   it('Caminho feliz - Cadastro de produto', () => {
-
-    //Realiza o login pra buscar o token 
-    cy.login().then((loginResponse) => {
-
-      token = loginResponse
       
-      //Realiza a chamada do serviço de cadastro dos produtos
-      cy.request({
-        method: 'POST',
-        url: backUrl+'/produtos',
-        headers: {
-          Authorization: `Bearer${token}`,
-        },
-        body: {
-          nome: nome,
-          preco: preco,
-          descricao: descricao,
-          quantidade: quantidade
-        },
-        failOnStatusCode: false
-      }).then((cadastroProdutosResponse) => {
+    //Realiza a chamada do serviço de cadastro dos produtos
+    cy.request({
+      method: 'POST',
+      url: backUrl+'/produtos',
+      headers: {
+        Authorization: `Bearer${token}`,
+      },
+      body: {
+        nome: nome,
+        preco: preco,
+        descricao: descricao,
+        quantidade: quantidade
+      },
+      failOnStatusCode: false
+    }).then((cadastroProdutosResponse) => {
 
-        if (cadastroProdutosResponse.status == '201') {
-          //Verifica o retorno do serviço
-          expect(cadastroProdutosResponse.status).to.equal(201)
-          expect(cadastroProdutosResponse.body.message).to.have.string('Cadastro realizado com sucesso')
-          expect(cadastroProdutosResponse.body._id).to.exist
-        }
-        else if (cadastroProdutosResponse.status == '403') {
-          //Verifica o retorno do serviço
-          expect(cadastroProdutosResponse.status).to.equal(403)
-          expect(cadastroProdutosResponse.body.message).to.have.string('Rota exclusiva para administradores')
-        }
-      })
+      if (cadastroProdutosResponse.status == '201') {
+        //Verifica o retorno do serviço
+        expect(cadastroProdutosResponse.status).to.equal(201)
+        expect(cadastroProdutosResponse.body.message).to.have.string('Cadastro realizado com sucesso')
+        expect(cadastroProdutosResponse.body._id).to.exist
+      }
+      else if (cadastroProdutosResponse.status == '403') {
+        //Verifica o retorno do serviço
+        expect(cadastroProdutosResponse.status).to.equal(403)
+        expect(cadastroProdutosResponse.body.message).to.have.string('Rota exclusiva para administradores')
+      }
     })
   })
 
