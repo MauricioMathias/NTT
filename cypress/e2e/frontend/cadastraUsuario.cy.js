@@ -23,7 +23,7 @@ describe('Cenário de Login', () => {
 
         cy.get('[data-testid="nome"]').type(nome) //Preenche o nome
         cy.get('[data-testid="email"]').type(email) //Preenche o email
-        cy.get('[data-testid="password"]').type(password) //Preenche senha
+        cy.get('[data-testid="password"]').type(password, {log: false}) //Preenche senha
 
         cy.get('[data-testid="cadastrar"]').click() //Clica no botão cadastrar para finalzar o processo
 

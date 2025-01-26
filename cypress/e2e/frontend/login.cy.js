@@ -22,7 +22,7 @@ describe('Cenário de Login', () => {
         cy.visit(frontUrl)
 
         cy.get('[data-testid="email"]').type(email) //Escreve o email
-        cy.get('[data-testid="senha"]').type(password) //Escreve a senha
+        cy.get('[data-testid="senha"]').type(password, {log: false}) //Escreve a senha
 
         cy.get('[data-testid="entrar"]').click() //Clica no enter para entrar na aplicação
 
