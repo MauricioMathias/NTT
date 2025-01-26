@@ -3,7 +3,7 @@
 const Leite = require('leite') //Esse pacote é um gerador de dados aleatórios brasileiros
 const generator = require('random-password'); //Esse pacote é um gerador de senha aleatório
 
-describe('Cenário de Login', () => {
+describe('Cenário de Cadastro do usuário', () => {
 
     //Classes e variáveis
     const leite = new Leite()

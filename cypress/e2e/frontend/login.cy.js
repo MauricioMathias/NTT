@@ -28,10 +28,10 @@ describe('Cenário de Login', () => {
 
         //Faz a distinção se é admin ou não, e verifica o login correto
 
-        if (admin == false) {
+        if (admin == 'false') {
             cy.contains('Serverest Store') //Verifica se foi pra página inicial da aplicação
         }
-        else if (admin == true) {
+        else if (admin == 'true') {
             cy.contains('Bem Vindo ' + nome) //Verifica se foi pra página inicial da aplicação
         }
         cy.get('[data-testid="logout"]').click() //E desloga da aplicação
