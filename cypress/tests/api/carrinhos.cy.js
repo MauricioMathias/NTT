@@ -16,7 +16,6 @@ describe('Cenário dos produtos', () => {
   var idProduto = generator(10) //id do produto
 
   before('Login para buscar o token', () => {
-    const backUrl = Cypress.env('backUrl')
 
     //Busca usuários
     cy.request({
