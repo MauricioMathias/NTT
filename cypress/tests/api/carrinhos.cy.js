@@ -14,13 +14,32 @@ describe('Cenário dos produtos', () => {
 
   //Variaveis de criação do carrinho
   var idProduto = generator(10) //id do produto
-  var idSegundoProduto  = generator(10) //id do segundo produto
 
-  it('Login para buscar o token', () => {
-    //Realiza o login pra buscar o token 
-    cy.login().then((loginResponse) => {
+  before('Login para buscar o token', () => {
+    const backUrl = Cypress.env('backUrl')
 
-      token = loginResponse
+    //Busca usuários
+    cy.request({
+        method: 'GET',
+        url: backUrl+'/usuarios'
+      }).then((getUsuariosResponse) => {
+
+        var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
+
+        var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
+
+        //Realiza o login
+        cy.request({
+            method: 'POST',
+            url: backUrl+'/login',
+            body:{
+                email: usuarioAleatorio.email,
+                password: usuarioAleatorio.password
+            }
+        }).then((loginResponse) => {
+
+            token = (loginResponse.body.authorization).replace("Bearer", "");
+        })
     })
   })
 

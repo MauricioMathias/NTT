@@ -1,15 +1,20 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
-  watchForFileChanges: false,
-  screenshotOnRunFailure: false,
   e2e: {
     env:{
-      backUrl: 'https://serverest.dev',
-      frontUrl: 'https://front.serverest.dev'
+      backUrl: 'https://serverest.dev'
     },
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
-  },
-});
+  specPattern: 'cypress/tests/**/*.cy.{js,jsx,ts,tsx}',
+  baseUrl: 'https://front.serverest.dev',
+  supportFile: false,
+  video: false,
+  reporter: 'mochawesome',
+  reporterOptions: {
+  reportDir: 'cypress/reports',
+  overwrite: false,
+  html: true,
+  json: true
+  }
+  }
+  });
