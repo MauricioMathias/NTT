@@ -12,7 +12,7 @@ describe('Cenário de Login', () => {
 
   it('Caminho feliz - Realiza login', () => {
 
-    cy.buscaUsuario().then((buscaUsuarioResponse) => {
+    cy.buscaUsuarioAdmin().then((buscaUsuarioResponse) => {
         nome = buscaUsuarioResponse.nome
         email = buscaUsuarioResponse.email
         password = buscaUsuarioResponse.password
@@ -26,14 +26,8 @@ describe('Cenário de Login', () => {
 
         cy.get('[data-testid="entrar"]').click() //Clica no enter para entrar na aplicação
 
-        //Faz a distinção se é admin ou não, e verifica o login correto
+        cy.contains('Bem Vindo ' + nome) //Verifica se foi pra página inicial da aplicação
 
-        if (admin == 'false') {
-            cy.contains('Serverest Store') //Verifica se foi pra página inicial da aplicação
-        }
-        else if (admin == 'true') {
-            cy.contains('Bem Vindo ' + nome) //Verifica se foi pra página inicial da aplicação
-        }
         cy.get('[data-testid="logout"]').click() //E desloga da aplicação
         cy.contains('Login') //E verifica se foi pra página inicial do login
     })

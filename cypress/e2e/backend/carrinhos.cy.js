@@ -14,7 +14,6 @@ describe('Cenário dos produtos', () => {
 
   //Variaveis de criação do carrinho
   var idProduto = generator(10) //id do produto
-  var idSegundoProduto  = generator(10) //id do segundo produto
 
   it('Login para buscar o token', () => {
     //Realiza o login pra buscar o token 
