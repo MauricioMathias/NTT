@@ -8,8 +8,6 @@ describe('Cenário de Cadastro do usuário', () => {
     //Classes e variáveis
     const leite = new Leite()
 
-    const frontUrl = Cypress.env('frontUrl')
-
     //Variaveis de criação do usuário
     var nome = leite.pessoa.nome()
     var email = leite.pessoa.email()//Email do usuário
@@ -17,7 +15,7 @@ describe('Cenário de Cadastro do usuário', () => {
 
     it('Caminho feliz - Cadastra usuário', () => {
         //Vai para a página inicial da aplicação
-        cy.visit(frontUrl)
+        cy.visit('')
 
         cy.get('[data-testid="cadastrar"]').click() //Clica no botão "cadastrar"
 
