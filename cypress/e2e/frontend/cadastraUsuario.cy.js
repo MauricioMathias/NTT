@@ -5,25 +5,17 @@ const generator = require('random-password'); //Esse pacote é um gerador de sen
 
 describe('Cenário de Cadastro do usuário', () => {
 
-    //Classes e variáveis
     const leite = new Leite()
-
-    const frontUrl = Cypress.env('frontUrl')
-
-    //Variaveis de criação do usuário
-    var nome = leite.pessoa.nome()
-    var email = leite.pessoa.email()//Email do usuário
-    var password = generator(10)//Senha do usuário
 
     it('Caminho feliz - Cadastra usuário', () => {
         //Vai para a página inicial da aplicação
-        cy.visit(frontUrl)
+        cy.visit(Cypress.env('frontUrl'))
 
         cy.get('[data-testid="cadastrar"]').click() //Clica no botão "cadastrar"
 
-        cy.get('[data-testid="nome"]').type(nome) //Preenche o nome
-        cy.get('[data-testid="email"]').type(email) //Preenche o email
-        cy.get('[data-testid="password"]').type(password, {log: false}) //Preenche senha
+        cy.get('[data-testid="nome"]').type(leite.pessoa.nome()) //Preenche o nome
+        cy.get('[data-testid="email"]').type(leite.pessoa.email()) //Preenche o email
+        cy.get('[data-testid="password"]').type(generator(10), {log: false}) //Preenche senha
 
         cy.get('[data-testid="cadastrar"]').click() //Clica no botão cadastrar para finalzar o processo
 

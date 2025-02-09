@@ -24,43 +24,14 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-const usuario = require("leite/lib/pessoa/usuario")
-
-Cypress.Commands.add('buscaUsuarioAdmin', () => { 
-    const backUrl = Cypress.env('backUrl')
+Cypress.Commands.add('buscaUsuario', () => {
 
     //Busca usuários
     cy.request({
         method: 'GET',
-        url: backUrl+'/usuarios'
+        url: Cypress.env('backUrl')+'/usuarios'
       }).then((getUsuariosResponse) => {
-
         var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
-
-        var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
-
-        if (usuarioAleatorio.administrador == 'true') {
-            
-            return usuarioAleatorio
-        }
-        else if (usuarioAleatorio.administrador == 'false'){
-           cy.buscaUsuarioAdmin()
-        }
-
-    })
-})
-
-Cypress.Commands.add('buscaUsuario', () => { 
-    const backUrl = Cypress.env('backUrl')
-
-    //Busca usuários
-    cy.request({
-        method: 'GET',
-        url: backUrl+'/usuarios'
-      }).then((getUsuariosResponse) => {
-
-        var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
-
         var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
 
         return usuarioAleatorio
@@ -68,30 +39,29 @@ Cypress.Commands.add('buscaUsuario', () => {
 })
 
 //Função para realizar login
-Cypress.Commands.add('login', () => { 
-    const backUrl = Cypress.env('backUrl')
+Cypress.Commands.add('getToken', () => {
 
     //Busca usuários
     cy.request({
         method: 'GET',
-        url: backUrl+'/usuarios'
+        url: Cypress.env('backUrl')+'/usuarios'
       }).then((getUsuariosResponse) => {
 
         var listaUsuarios = getUsuariosResponse.body.usuarios //Retorna o array dos usuários
-
         var usuarioAleatorio = listaUsuarios[Math.floor(Math.random()*listaUsuarios.length)] // Busca um usuário aleatório dentro do array
 
         //Realiza o login
         cy.request({
             method: 'POST',
-            url: backUrl+'/login',
+            url: Cypress.env('backUrl')+'/login',
             body:{
                 email: usuarioAleatorio.email,
                 password: usuarioAleatorio.password
             }
         }).then((loginResponse) => {
+            const token = (loginResponse.body.authorization).replace("Bearer", "")
 
-            return (loginResponse.body.authorization).replace("Bearer", "");
+            return token
         })
     })
 })
