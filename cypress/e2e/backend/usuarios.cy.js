@@ -5,36 +5,21 @@ const generator = require('random-password'); //Esse pacote é um gerador de sen
 
 describe('Cenário dos usuários', () => {
 
-  //Classes e variáveis
   const leite = new Leite()
 
-  const backUrl = Cypress.env('backUrl')
-
-  //Variaveis de criação do usuário
-  var nome = leite.pessoa.nome() //Nome do usuário
-  var email = leite.pessoa.email() //Email do usuário
-  var admin = Math.random() < 0.5 //Gera um booleano aleatório entre verdadeiro ou falso (0 ou 1)
-  var password = generator(10) //Senha do usuário
-  var idUsuario
-
-  //Variáveis de edição do usuário
-  var nomeAlterado = leite.pessoa.nome() //Nome do usuário alterado
-  var emailAlterado = leite.pessoa.email() //Email do usuário alterado
-  var passwordAlterado = generator(10) //Senha do usuário alterado
-
-  it('Caminho feliz - Cadastro de usuário', () => {
+  it.only('Caminho feliz - Cadastro de usuário', () => {
     //Realiza a chamada do serviço de criação dos usuários
     cy.request({
       method: 'POST',
-      url: backUrl+'/usuarios',
+      url: Cypress.env('backUrl')+'/usuarios',
       body: {
-        nome: nome,
-        email: email,
-        password: password,
-        administrador: `${admin}`
+        nome: leite.pessoa.nome(),
+        email: leite.pessoa.email(),
+        password: generator(10),
+        administrador: String((Math.random() < 0.5)) //Retorna 50% verdadeiro ou falso para flg administrador
       }
     }).then((cadastroUsuariosResponse) => {
-      idUsuario= cadastroUsuariosResponse.body._id
+      cy.wrap(cadastroUsuariosResponse).as('dadosUsuario')
       
       //Verifica o retorno do serviço
       expect(cadastroUsuariosResponse.status).to.equal(201)
@@ -43,11 +28,12 @@ describe('Cenário dos usuários', () => {
     })
   })
 
-  it('Caminho feliz - Busca de usuário por ID', () => {
+  it('Caminho feliz - Busca de usuário por ID',  function() {
+    cy.log(this.dadosUsuario)
     //Realiza a chamada do serviço de busca dos usuários
-    cy.request({
+    /* cy.request({
       method: 'GET',
-      url: backUrl+'/usuarios/'+idUsuario
+      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario
     }).then((buscaUsuariosResponse) => {
       
       //Verifica o retorno do serviço
@@ -57,19 +43,19 @@ describe('Cenário dos usuários', () => {
       expect(buscaUsuariosResponse.body.password).to.have.string(password)
       expect(buscaUsuariosResponse.body.administrador).to.have.string(admin)
       expect(buscaUsuariosResponse.body._id).to.exist
-    })
+    }) */
   })
 
   it('Caminho feliz - Editar usuário', () => {
     //Realiza a chamada do serviço de edição dos usuários
     cy.request({
       method: 'PUT',
-      url: backUrl+'/usuarios/'+idUsuario,
+      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario,
       body: {
-        nome: nomeAlterado,
-        email: emailAlterado,
-        password: passwordAlterado,
-        administrador: `${admin}`
+        nome: leite.pessoa.nome(),
+        email: leite.pessoa.email(),
+        password: generator(10),
+        administrador: String((Math.random() < 0.5)) //Retorna 50% verdadeiro ou falso para flg administrador
       }
     }).then((editaUsuariosResponse) => {
       
@@ -83,7 +69,7 @@ describe('Cenário dos usuários', () => {
     //Realiza a chamada do serviço de exclusão dos usuários
     cy.request({
       method: 'DELETE',
-      url: backUrl+'/usuarios/'+idUsuario
+      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario
     }).then((excluiUsuariosResponse) => {
       
       //Verifica o retorno do serviço

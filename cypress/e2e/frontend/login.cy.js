@@ -9,12 +9,8 @@ describe('Cenário de Login', () => {
     cy.visit(Cypress.env('frontUrl'))
   })
 
-  it.only('Caminho feliz - Realiza login', () => {
-    cy.get('@usuario').then((usuario) =>{ 
-      const usr = usuario
-
-      cy.log(usr.email) //Escreve o email
-      cy.log(usr.password) //Escreve a senha
+  it('Caminho feliz - Realiza login', () => {
+    cy.get('@usuario').then((usr) =>{
 
       cy.get('[data-testid="email"]').type(usr.email) //Escreve o email
       cy.get('[data-testid="senha"]').type(usr.password, {log: false}) //Escreve a senha
@@ -26,6 +22,8 @@ describe('Cenário de Login', () => {
       if (usr.administrador == 'false') {
           cy.contains('Serverest Store') //Verifica se foi pra página inicial da aplicação
           cy.url().should('contain', '/home')
+
+          //Precisa realizar as verificaçoes dos usuarios comuns
       }
       else if (usr.administrador == 'true') {
           cy.contains('Bem Vindo ' + usr.nome) //Verifica se foi pra página inicial da aplicação
