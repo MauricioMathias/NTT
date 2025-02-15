@@ -3,11 +3,14 @@
 const Leite = require('leite') //Esse pacote é um gerador de dados aleatórios brasileiros
 const generator = require('random-password'); //Esse pacote é um gerador de senha aleatório
 
-describe('Cenário dos usuários', () => {
+before(() => {
+  cy.buscaUsuario().as('usuario')
+})
 
+describe('Cenário dos usuários', () => {
   const leite = new Leite()
 
-  it.only('Caminho feliz - Cadastro de usuário', () => {
+  it('Caminho feliz - Cadastro de usuário', () => {
     //Realiza a chamada do serviço de criação dos usuários
     cy.request({
       method: 'POST',
@@ -29,28 +32,27 @@ describe('Cenário dos usuários', () => {
   })
 
   it('Caminho feliz - Busca de usuário por ID',  function() {
-    cy.log(this.dadosUsuario)
     //Realiza a chamada do serviço de busca dos usuários
-    /* cy.request({
+    cy.request({
       method: 'GET',
-      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario
+      url: Cypress.env('backUrl')+'/usuarios/'+this.usuario._id
     }).then((buscaUsuariosResponse) => {
       
       //Verifica o retorno do serviço
       expect(buscaUsuariosResponse.status).to.equal(200)
-      expect(buscaUsuariosResponse.body.nome).to.have.string(nome)
-      expect(buscaUsuariosResponse.body.email).to.have.string(email)
-      expect(buscaUsuariosResponse.body.password).to.have.string(password)
-      expect(buscaUsuariosResponse.body.administrador).to.have.string(admin)
+      expect(buscaUsuariosResponse.body.nome).to.have.string(this.usuario.nome)
+      expect(buscaUsuariosResponse.body.email).to.have.string(this.usuario.email)
+      expect(buscaUsuariosResponse.body.password).to.have.string(this.usuario.password)
+      expect(buscaUsuariosResponse.body.administrador).to.have.string(this.usuario.administrador)
       expect(buscaUsuariosResponse.body._id).to.exist
-    }) */
+    })
   })
 
-  it('Caminho feliz - Editar usuário', () => {
+  it('Caminho feliz - Editar usuário', function() {
     //Realiza a chamada do serviço de edição dos usuários
     cy.request({
       method: 'PUT',
-      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario,
+      url: Cypress.env('backUrl')+'/usuarios/'+this.usuario._id,
       body: {
         nome: leite.pessoa.nome(),
         email: leite.pessoa.email(),
@@ -65,11 +67,11 @@ describe('Cenário dos usuários', () => {
     })
   })
 
-  it('Caminho feliz - Excluir usuário', () => {
+  it('Caminho feliz - Excluir usuário', function() {
     //Realiza a chamada do serviço de exclusão dos usuários
     cy.request({
       method: 'DELETE',
-      url: Cypress.env('backUrl')+'/usuarios/'+idUsuario
+      url: Cypress.env('backUrl')+'/usuarios/'+this.usuario._id
     }).then((excluiUsuariosResponse) => {
       
       //Verifica o retorno do serviço
